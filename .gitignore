@@ -1,0 +1,6 @@
+# IDEA
+.idea/*
+!.idea/dictionaries/
+
+# NPM
+node_modules/
