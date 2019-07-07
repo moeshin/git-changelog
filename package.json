@@ -1,18 +1,32 @@
 {
-  "name": "git-custom-release",
+  "name": "@moeshin/git-changelog",
   "version": "1.0.0",
   "description": "Git custom release",
   "main": "index.js",
   "keywords": [],
-  "author": "",
+  "author": "moeshin",
   "license": "ISC",
   "dependencies": {
     "conventional-changelog": "^3.1.8",
-    "conventional-changelog-core": "^3.2.2",
     "yargs": "^13.2.4",
     "lodash": "^4.17.11"
   },
   "bin": {
-    "git-custom-release": "cli.js"
-  }
+    "git-changelog": "cli.js"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeshin/git-changelog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moeshin/git-changelog/issues"
+  },
+  "homepage": "https://github.com/moeshin/git-changelog#readme"
 }
