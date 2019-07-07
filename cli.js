@@ -171,8 +171,21 @@ if (argv.commitPath) {
 
 let log = '';
 let notes = '';
+let gitSemverTagsIndex = 0;
 
-standardVersion(options, templateContext, gitRawCommitsOpts, config.parserOpts, writerOpts)
+// noinspection HtmlDeprecatedAttribute
+const LOG_ITEM_START_ANCHOR = '<a name="%s"></a>';
+function logItemStartAnchor(version) {
+    return LOG_ITEM_START_ANCHOR.replace(/%s/g, version);
+}
+function logItemStartPattern(version) {
+    return new RegExp(`^${logItemStartAnchor(version)}$`, 'm');
+}
+function logItem(version, string) {
+    return logItemStartAnchor(templateContext.version) + '\n' + string;
+}
+
+standardVersion(options, templateContext, gitRawCommitsOpts, config.parserOpts, config.writerOpts)
     .on('error', e => {
         if (argv.verbose) {
             console.error(e.stack)
@@ -182,13 +195,27 @@ standardVersion(options, templateContext, gitRawCommitsOpts, config.parserOpts, 
         process.exit(1)
     })
     .on('data', buffer => {
-        const string = buffer.toString().replace(/\n+$/, '\n');
+        const string = buffer.toString().replace(/\n+$/, '\n\n');
         if (!notes) {
-            log = notes  = string;
+            notes  = string;
+            log = logItem(templateContext.version, string);
         } else {
-            log += string;
+            log += logItem(templateContext.gitSemverTags[gitSemverTagsIndex++], string);
         }
     })
     .on('end', () => {
-        fs.writeFileSync(argv.log, argv.header + '\n' + LOG_START_ANCHOR + '\n\n' + log + oldLog);
+        if (oldLog) {
+            if (oldLog.search(logItemStartPattern(templateContext.version)) !== -1) {
+                if (templateContext.gitSemverTags.length) {
+                    let search = logItemStartPattern(templateContext.gitSemverTags[0]);
+                    const start = oldLog.search(search);
+                    if (start !== -1) {
+                        oldLog = oldLog.substring(start + search.length);
+                    }
+                } else {
+                    oldLog = '';
+                }
+            }
+        }
+        fs.writeFileSync(argv.log, argv.header + '\n' + LOG_START_ANCHOR + log + oldLog);
     });
