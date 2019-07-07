@@ -76,9 +76,8 @@ yargs.option('release-version', {
 const argv = yargs.argv;
 
 // noinspection HtmlDeprecatedAttribute
-const LOG_START_ANCHOR = '<a name="log"></a>';
-const LOG_START_PATTERN = new RegExp(`^${LOG_START_ANCHOR}$`, 'm');
-const LOG_START_OFFSET = LOG_START_ANCHOR.length;
+const LOG_START_ANCHOR = '<a name="log"></a>\n';
+const LOG_START_PATTERN = new RegExp(`^${LOG_START_ANCHOR}`, 'm');
 
 let oldLog = fs.existsSync(argv.log) ? fs.readFileSync(argv.log, utils.encoding) : '';
 if (oldLog) {
@@ -87,7 +86,7 @@ if (oldLog) {
     } else {
         const oldLogStart = oldLog.search(LOG_START_PATTERN);
         if (oldLogStart !== -1) {
-            oldLog = oldLog.substring(oldLogStart + LOG_START_OFFSET);
+            oldLog = oldLog.substring(oldLogStart + LOG_START_ANCHOR.length);
         }
     }
 } else {
