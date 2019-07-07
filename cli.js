@@ -162,13 +162,11 @@ if (!argv.header) {
 }
 delete config.header;
 
-const gitRawCommitsOpts = _.merge({
-    path: argv.commitPath,
-}, config.gitRawCommitsOpts);
+const gitRawCommitsOpts = config.gitRawCommitsOpts || {};
 
-const writerOpts = _.merge({
-    headerPartial: utils.read('templates/header.hbs')
-}, config.writerOpts);
+if (argv.commitPath) {
+    gitRawCommitsOpts.path = argv.commitPath;
+}
 
 
 let log = '';
