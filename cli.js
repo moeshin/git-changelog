@@ -31,7 +31,7 @@ yargs.option('release-version', {
     describe: 'The header of log. You also can set it with --config\nDefault is the content of templates/log-header.txt',
     string: true
 }).option('notes', {
-    describe: 'Release notes file name\nIf no use，it no output. Default is RELEASE-NOTES.md',
+    describe: 'Release notes file name\nIf no use，it no output. Default is' + defaults.notes,
 }).option('preset', {
     alias: 'p',
     default: defaults.preset,

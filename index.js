@@ -90,6 +90,10 @@ function gitChangelog(argv) {
     }
     delete config.header;
 
+    if (argv.notes === true) {
+        argv.notes = defaults.notes;
+    }
+
     const gitRawCommitsOpts = config.gitRawCommitsOpts || {};
 
     if (argv.commitPath) {
@@ -128,6 +132,9 @@ function gitChangelog(argv) {
             const string = buffer.toString().replace(/\n+$/, '\n\n');
             if (!log) {
                 log = logItem(templateContext.version, string);
+                if (typeof argv.notes === 'string') {
+                    fs.writeFileSync(argv.notes, string);
+                }
             } else {
                 log += logItem(templateContext.gitSemverTags[gitSemverTagsIndex++], string);
             }
