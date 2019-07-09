@@ -17,6 +17,9 @@ function Argv() {
     /** @type {String} */
     this.header = defaults.header;
 
+    /** @type {String} */
+    this.footer = undefined;
+
     /** @type {String|boolean} */
     this.notes = undefined;
 

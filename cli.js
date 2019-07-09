@@ -30,6 +30,9 @@ yargs.option('release-version', {
 }).option('header', {
     describe: 'The header of log. You also can set it with --config\nDefault is the content of templates/log-header.txt',
     string: true
+}).option('footer', {
+    describe: 'The footer of log. You also can set it with --config\nUnlike the header, it is only used for the first generation.',
+    string: true
 }).option('notes', {
     describe: 'Release notes file name\nIf no use，it no output. Default is' + defaults.notes,
 }).option('preset', {

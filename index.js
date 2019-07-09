@@ -90,6 +90,11 @@ function gitChangelog(argv) {
     }
     delete config.header;
 
+    if (!argv.footer) {
+        argv.footer = config.footer ||  '';
+    }
+    delete config.footer;
+
     if (argv.notes === true) {
         argv.notes = defaults.notes;
     }
@@ -152,6 +157,8 @@ function gitChangelog(argv) {
                         oldLog = '';
                     }
                 }
+            } else {
+                oldLog = argv.footer;
             }
             fs.writeFileSync(argv.log, argv.header + '\n' + LOG_START_ANCHOR + log + oldLog);
         });
