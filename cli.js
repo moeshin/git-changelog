@@ -19,9 +19,7 @@ yargs.option('release-version', {
     default: false,
     boolean: true
 }).option('log', {
-    describe: 'Changelog file name',
-    default: defaults.log,
-    string: true
+    describe: 'Changelog file path\nIf no use，it no output. Default is' + defaults.log,
 }).option('header', {
     describe: 'The header of log. You also can set it with --config\nDefault is the content of templates/log-header.txt',
     string: true
@@ -29,7 +27,7 @@ yargs.option('release-version', {
     describe: 'The footer of log. You also can set it with --config\nUnlike the header, it is only used for the first generation.',
     string: true
 }).option('notes', {
-    describe: 'Release notes file name\nIf no use，it no output. Default is' + defaults.notes,
+    describe: 'Release notes file path\nIf no use，it no output. Default is' + defaults.notes,
 }).option('preset', {
     alias: 'p',
     default: defaults.preset,

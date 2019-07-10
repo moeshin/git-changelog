@@ -15,22 +15,9 @@ const ArgvError = errors.ArgvError;
  */
 function gitChangelog(argv) {
 
-    // noinspection HtmlDeprecatedAttribute
-    const LOG_START_ANCHOR = '<a name="log"></a>\n';
-    const LOG_START_PATTERN = new RegExp(`^${LOG_START_ANCHOR}`, 'm');
-
-    let oldLog = fs.existsSync(argv.log) ? fs.readFileSync(argv.log, utils.encoding) : '';
-    if (oldLog) {
-        if (argv.force) {
-            oldLog = '';
-        } else {
-            const oldLogStart = oldLog.search(LOG_START_PATTERN);
-            if (oldLogStart !== -1) {
-                oldLog = oldLog.substring(oldLogStart + LOG_START_ANCHOR.length);
-            }
-        }
-    } else {
-        argv.force = true;
+    if (!argv.log && !argv.notes) {
+        console.warn('No set "log" and "notes", it no output.');
+        process.exit();
     }
 
     const options = _.omit({
@@ -95,6 +82,10 @@ function gitChangelog(argv) {
     }
     delete config.footer;
 
+    if (argv.log === true) {
+        argv.log = defaults.log;
+    }
+
     if (argv.notes === true) {
         argv.notes = defaults.notes;
     }
@@ -103,6 +94,30 @@ function gitChangelog(argv) {
 
     if (argv.commitPath) {
         gitRawCommitsOpts.path = argv.commitPath;
+    }
+
+    // noinspection HtmlDeprecatedAttribute
+    const LOG_START_ANCHOR = '<a name="log"></a>\n';
+    const LOG_START_PATTERN = new RegExp(`^${LOG_START_ANCHOR}`, 'm');
+
+    let oldLog = '';
+    if (argv.log) {
+        if (typeof argv.log !== 'string') {
+            throw new TypeError('argv.log is not string');
+        }
+        oldLog = fs.existsSync(argv.log) ? fs.readFileSync(argv.log, utils.encoding) : '';
+        if (oldLog) {
+            if (argv.force) {
+                oldLog = '';
+            } else {
+                const oldLogStart = oldLog.search(LOG_START_PATTERN);
+                if (oldLogStart !== -1) {
+                    oldLog = oldLog.substring(oldLogStart + LOG_START_ANCHOR.length);
+                }
+            }
+        } else {
+            argv.force = true;
+        }
     }
 
 
@@ -135,11 +150,21 @@ function gitChangelog(argv) {
         })
         .on('data', buffer => {
             const string = buffer.toString().replace(/\n+$/, '\n\n');
+
+            if (argv.notes) {
+                if (typeof argv.notes !== 'string') {
+                    throw new TypeError('argv.notes is not string');
+                }
+                fs.writeFileSync(argv.notes, string);
+                delete argv.notes;
+            }
+
+            if (!argv.log) {
+                process.exit();
+            }
+
             if (!log) {
                 log = logItem(templateContext.version, string);
-                if (typeof argv.notes === 'string') {
-                    fs.writeFileSync(argv.notes, string);
-                }
             } else {
                 log += logItem(templateContext.gitSemverTags[gitSemverTagsIndex++], string);
             }
@@ -159,6 +184,9 @@ function gitChangelog(argv) {
                 }
             } else {
                 oldLog = argv.footer;
+            }
+            if (typeof argv.log !== 'string') {
+                throw new TypeError('argv.log is not string');
             }
             fs.writeFileSync(argv.log, argv.header + '\n' + LOG_START_ANCHOR + log + oldLog);
         });

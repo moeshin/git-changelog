@@ -8,7 +8,7 @@ function Argv() {
     /** @type {boolean} */
     this.force = false;
 
-    /** @type {String} */
+    /** @type {String|boolean} */
     this.log = defaults.log;
 
     /** @type {String} */
