@@ -75,10 +75,16 @@ function gitChangelog(argv) {
     if (!argv.header) {
         argv.header = config.header || defaults.header;
     }
+    if (fs.existsSync(argv.header)) {
+        argv.header = fs.readFileSync(argv.header, utils.encoding).toString()
+    }
     delete config.header;
 
     if (!argv.footer) {
         argv.footer = config.footer ||  '';
+    }
+    if (fs.existsSync(argv.footer)) {
+        argv.footer = fs.readFileSync(argv.footer, utils.encoding).toString()
     }
     delete config.footer;
 

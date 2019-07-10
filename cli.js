@@ -21,10 +21,10 @@ yargs.option('release-version', {
 }).option('log', {
     describe: 'Changelog file path\nIf no use，it no output. Default is' + defaults.log,
 }).option('header', {
-    describe: 'The header of log. You also can set it with --config\nDefault is the content of templates/log-header.txt',
+    describe: 'The header of log, it can set as path. You also can set it with --config\nDefault is the content of templates/log-header.txt',
     string: true
 }).option('footer', {
-    describe: 'The footer of log. You also can set it with --config\nUnlike the header, it is only used for the first generation.',
+    describe: 'The footer of log, it can set as path. You also can set it with --config\nUnlike the header, it is only used for the first generation.',
     string: true
 }).option('notes', {
     describe: 'Release notes file path\nIf no use，it no output. Default is' + defaults.notes,
