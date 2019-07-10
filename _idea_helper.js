@@ -5,9 +5,6 @@ function Argv() {
     /** @type {String} */
     this.releaseVersion = undefined;
 
-    /** @type {String} */
-    this.message = defaults.message;
-
     /** @type {boolean} */
     this.force = false;
 

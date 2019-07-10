@@ -13,11 +13,6 @@ yargs.option('release-version', {
     alias: 'r',
     describe: 'Specify the release version manually',
     string: true
-}).option('message', {
-    alias: 'm',
-    describe: 'Commit message, replaces %s with new version',
-    default: defaults.message,
-    string: true
 }).option('force', {
     alias: 'f',
     describe: 'Forced to regenerate log',
