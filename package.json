@@ -1,7 +1,7 @@
 {
   "name": "@moeshin/git-changelog",
   "version": "1.0.0",
-  "description": "Git custom release",
+  "description": "Generate change logs by git commit",
   "main": "index.js",
   "keywords": [],
   "author": "moeshin",
